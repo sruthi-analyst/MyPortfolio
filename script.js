@@ -32,18 +32,33 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Smooth Scroll for Navigation Links
-document.querySelectorAll('.nav-links a').forEach(anchor => {
+// Highlight social links and scroll for all internal anchors
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-        e.preventDefault();
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
         
         if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 70,
-                behavior: 'smooth'
-            });
+            e.preventDefault();
+            
+            // If it's the contact trigger, highlight WITHOUT scrolling
+            if (this.classList.contains('highlight-trigger')) {
+                const socialLinks = document.getElementById('social-links');
+                socialLinks.classList.add('pulse');
+                
+                // Add hover listener once to remove highlight
+                socialLinks.addEventListener('mouseenter', () => {
+                    socialLinks.classList.remove('pulse');
+                }, { once: true });
+            } else {
+                // Otherwise scroll normally
+                window.scrollTo({
+                    top: targetElement.offsetTop - 150,
+                    behavior: 'smooth'
+                });
+            }
         }
     });
 });
+
+
